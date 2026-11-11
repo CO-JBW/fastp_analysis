@@ -2,7 +2,7 @@
 library(jsonlite)
 
 args <- commandArgs(trailingOnly = TRUE)
-rep <- fromJSON(args[1])
+rep <- fromJSON(args[1], simplifyDataFrame = FALSE)
 sample <- args[2]
 figdir <- "/results/figures"
 dir.create(figdir, showWarnings = FALSE, recursive = TRUE)
