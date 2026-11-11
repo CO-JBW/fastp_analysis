@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# input: the first read 1 FASTQ found anywhere under the data directory
+R1=$(find /data -type f \( -name '*_R1*.f*q.gz' -o -name '*_1.f*q.gz' \
+  -o -name '*_R1*.f*q' -o -name '*_1.f*q' \) | sort | head -1)
+[ -n "$R1" ] || { echo "ERROR: no FASTQ reads found under /data" >&2; exit 1; }
+B=$(basename "$R1")
+R2="$(dirname "$R1")/$(echo "$B" | sed -e 's/_R1/_R2/' -e 's/_1\./_2./')"
+[ -f "$R2" ] || { echo "ERROR: read 2 mate not found for $R1" >&2; exit 1; }
+S=$(echo "$B" | sed -e 's/_R1.*//' -e 's/_1\..*//')
+mkdir -p /results/reports /results/figures /results/trimmed
+
+# quality control and trimming
+fastp -i "$R1" -I "$R2" \
+  -o "/results/trimmed/${S}_trimmed_R1.fastq.gz" \
+  -O "/results/trimmed/${S}_trimmed_R2.fastq.gz" \
+  --detect_adapter_for_pe \
+  --qualified_quality_phred 15 --n_base_limit 5 --length_required 30 \
+  --json "/results/reports/${S}_fastp.json" \
+  --html "/results/reports/${S}_fastp.html" \
+  --thread "$(nproc)" 2> "/results/reports/${S}_fastp.log"
+
+# figures and metrics table
+Rscript /code/qc_plots.R "/results/reports/${S}_fastp.json" "$S"
