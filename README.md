@@ -68,7 +68,7 @@ R 4.0 or newer
 
 **R (CRAN)**
 ```
-jsonlite=0.9.0
+jsonlite=2.0.0
 ```
 
 ### Functional
