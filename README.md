@@ -68,7 +68,7 @@ R 4.0 or newer
 
 **R (CRAN)**
 ```
-jsonlite=0.9.0
+jsonlite=2.0.0
 ```
 
 ### Functional
@@ -79,7 +79,7 @@ fastp=0.20.1+dfsg-1
 ```
 
 ### Testing (Causes a build error)
-**R (CRAN)**
+**apt-get**
 ```
 fastp=42
 ```
