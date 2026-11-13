@@ -63,10 +63,7 @@ matching read 2 file is missing.
 
 **Starter Environment**
 ```
-R 4.0 or newer
-```
-
-**R (CRAN)**
+[CPU | Basic] R (4.1.2, tidyverse 1.3.2)
 ```
 jsonlite=2.0.0
 ```
